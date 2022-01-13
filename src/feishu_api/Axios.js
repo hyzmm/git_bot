@@ -1,5 +1,5 @@
 import axios from "axios";
-import { fetchAccessToken } from "./FetchAccessToken";
+import { fetchAccessToken } from "./FetchAccessToken.js";
 
 const feiShuAxios = axios.create({
   baseURL: "https://open.feishu.cn/open-apis",

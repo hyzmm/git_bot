@@ -1,13 +1,6 @@
 import axios from "axios";
 
-interface AccessToken {
-  code: number;
-  expire: number;
-  msg: String;
-  tenant_access_token: String;
-}
-
-function fetchAccessToken(): Promise<AccessToken> {
+function fetchAccessToken() {
   return axios
     .post(
       "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal/",
@@ -19,4 +12,4 @@ function fetchAccessToken(): Promise<AccessToken> {
     .then((res) => res.data);
 }
 
-export { fetchAccessToken, AccessToken };
+export { fetchAccessToken };
