@@ -78,6 +78,7 @@ export default async function handleMergeQuest(body) {
         msg = { text: `${creator.name} 关闭了此分支` };
       }
 
+      if (!mergeRequestMessages[iid]) return;
       const chatId = mergeRequestMessages[iid].message_id;
 
       delete mergeRequestMessages[iid];
