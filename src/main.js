@@ -11,11 +11,11 @@ app.post("/", (req, res) => {
   if (handler) {
     const result = handler.call(null, req.body);
     res.send(result);
-    console.log("handled", JSON.stringify(req.body));
+    console.log("handled", gitLabEvent, JSON.stringify(req.body));
   } else {
     res.send("do nothing");
-    console.log("unhandled", JSON.stringify(req.body));
+    console.log("unhandled", gitLabEvent, JSON.stringify(req.body));
   }
 });
 
-app.listen(8080);
+app.listen(3016);

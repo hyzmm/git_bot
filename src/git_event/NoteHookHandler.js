@@ -2,7 +2,7 @@ import { mergeRequestMessages } from "./MergeQuestHandler.js";
 import { feiShuReplyMessage } from "../feishu_api/ReplyMessage.js";
 import { feiShuSendMessage } from "../feishu_api/SendMessage.js";
 
-const discussionMessages = {};
+export const discussionMessages = {};
 
 export default async function handleNoteHook(body) {
   const { type, description, discussion_id, position, note } =
@@ -48,6 +48,7 @@ export default async function handleNoteHook(body) {
   }
 
   if (sendResult) {
+    sendResult.iid = prId;
     discussionMessages[discussion_id] = sendResult;
   }
   return "ok";
