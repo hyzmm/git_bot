@@ -1,9 +1,10 @@
 import feiShuAxios from "./Axios.js";
+import { CHAT_ID } from "./SendMessage.js";
 
 async function feiShuReplyMessage(messageId, content, msgType = "interactive") {
   try {
     const res = await feiShuAxios.post(`/im/v1/messages/${messageId}/reply`, {
-      receive_id: "oc_f6f980a6c823a0de04c7606ec1b6ed32",
+      receive_id: CHAT_ID,
       content: content,
       msg_type: msgType,
     });
