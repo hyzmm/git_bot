@@ -47,7 +47,9 @@ export default async function handleMergeQuest(body) {
                 is_short: true,
                 text: {
                   tag: "lark_md",
-                  content: `**👉 指派给：** ${assignee.name}`,
+                  content: `**👉 指派给：** ${
+                    assignee ? assignee.name : "任意"
+                  }`,
                 },
               },
             ],
@@ -106,9 +108,9 @@ export default async function handleMergeQuest(body) {
     case "merged":
     case "closed":
       if (state === "merged") {
-        msg = { text: `${user.name} 合并了此分支` };
+        msg = { text: `${user.name} 合并了此 PR` };
       } else {
-        msg = { text: `${user.name} 关闭了此分支` };
+        msg = { text: `${user.name} 关闭了此 PR` };
       }
 
       if (!mergeRequestMessages[iid]) return;
