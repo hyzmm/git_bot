@@ -1,15 +1,29 @@
 import { feiShuSendMessage } from "../feishu_api/SendMessage.js";
 import { feiShuReplyMessage } from "../feishu_api/ReplyMessage.js";
 import { discussionMessages } from "./NoteHookHandler.js";
+import { getGitLabUserInfo } from "../gitlab_api/index.js";
 
 export const mergeRequestMessages = {};
 
 export default async function handleMergeQuest(body) {
-  const { title, description, iid, state } = body.object_attributes;
+  const {
+    title,
+    description,
+    iid,
+    state,
+    author_id,
+    source_branch,
+    target_branch,
+  } = body.object_attributes;
   const labels = body.labels.map((e) => e.title).join(" ");
-  const creator = body.user;
+  const { user } = body;
   const assignee = body.assignee;
 
+  let authorName = "";
+  try {
+    const author = await getGitLabUserInfo(author_id);
+    authorName = author.name;
+  } catch (e) {}
   let msg;
   let type;
   switch (state) {
@@ -26,7 +40,7 @@ export default async function handleMergeQuest(body) {
                 is_short: true,
                 text: {
                   tag: "lark_md",
-                  content: `**☃️ 创建者：**${creator.name}`,
+                  content: `**☃️ 创建者：**${authorName}`,
                 },
               },
               {
@@ -34,6 +48,25 @@ export default async function handleMergeQuest(body) {
                 text: {
                   tag: "lark_md",
                   content: `**👉 指派给：** ${assignee.name}`,
+                },
+              },
+            ],
+          },
+          {
+            tag: "div",
+            fields: [
+              {
+                is_short: true,
+                text: {
+                  tag: "lark_md",
+                  content: `**🛠️️ 来源分支：**${source_branch}`,
+                },
+              },
+              {
+                is_short: true,
+                text: {
+                  tag: "lark_md",
+                  content: `**🎯 目标分支：** ${target_branch}`,
                 },
               },
             ],
@@ -73,9 +106,9 @@ export default async function handleMergeQuest(body) {
     case "merged":
     case "closed":
       if (state === "merged") {
-        msg = { text: `${creator.name} 合并了此分支` };
+        msg = { text: `${user.name} 合并了此分支` };
       } else {
-        msg = { text: `${creator.name} 关闭了此分支` };
+        msg = { text: `${user.name} 关闭了此分支` };
       }
 
       if (!mergeRequestMessages[iid]) return;
