@@ -107,6 +107,7 @@ export default async function handleMergeQuest(body) {
       break;
     case "merged":
     case "closed":
+      return;
       if (state === "merged") {
         msg = { text: `${user.name} 合并了此 PR` };
       } else {

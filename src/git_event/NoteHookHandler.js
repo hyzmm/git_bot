@@ -39,14 +39,10 @@ export default async function handleNoteHook(body) {
         .join("\n");
 
       elements.push({
-        tag: "div",
-        text: {
-          content: `
-**代码片段**
+        tag: "markdown",
+        content: `
 ${codes}
 `,
-          tag: "lark_md",
-        },
       });
       elements.push({
         tag: "hr",
@@ -63,11 +59,8 @@ ${codes}
     elements: [
       ...elements,
       {
-        tag: "div",
-        text: {
-          content: `${body.user.name}: ${contentBody}`,
-          tag: "lark_md",
-        },
+        tag: "markdown",
+        content: `${body.user.name}: ${contentBody}`,
       },
     ],
   };
