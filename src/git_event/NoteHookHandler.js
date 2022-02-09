@@ -8,6 +8,9 @@ export const discussionMessages = {};
 export default async function handleNoteHook(body) {
   const { type, discussion_id, project_id, position, note } =
     body.object_attributes;
+
+  if (!body.merge_request) return;
+
   const { source_branch, target_branch } = body.merge_request;
   const prId = body.merge_request.iid;
   let feishuMessage;
